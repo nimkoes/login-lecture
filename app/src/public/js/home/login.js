@@ -2,7 +2,7 @@
 
 const id = document.querySelector("#id"),
   psword = document.querySelector("#psword"),
-  loginBtn = document.querySelector("button");
+  loginBtn = document.querySelector("#button");
 
 loginBtn.addEventListener("click", login);
 
@@ -19,7 +19,7 @@ function login() {
         },
         body: JSON.stringify(req)
     })
-    .then((res) => res.json())
+    .then((res) => res.json())  // promise 객체 반환
     .then((res) => {
         if(res.success) {
             location.href = "/";
