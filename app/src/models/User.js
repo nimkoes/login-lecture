@@ -12,10 +12,10 @@ class User {
 
         try {
             // await 은 .getUserInfo 가 반환하는 객체가 Promise 이기 때문에, 결과를 받아 올 떄까지 기다리게 함
-            const { id, psword } = await UserStorage.getUserInfo(client.id);
+            const user = await UserStorage.getUserInfo(client.id);
 
-            if(id) {
-                if(id === client.id && psword === client.psword) {
+            if(user) {
+                if(user.id === client.id && user.psword === client.psword) {
                     return { success: true };
                 }
                 return  { success: false, msg: "비밀번호가 틀렸습니다." }
