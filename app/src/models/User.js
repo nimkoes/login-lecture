@@ -9,16 +9,22 @@ class User {
     
     async login() {
         const client = this.body;
-        const { id, psword } = await UserStorage.getUserInfo(client.id);
 
-        if(id) {
-            if(id === client.id && psword === client.psword) {
-                return { success: true };
+        try {
+            // await 은 .getUserInfo 가 반환하는 객체가 Promise 이기 때문에, 결과를 받아 올 떄까지 기다리게 함
+            const { id, psword } = await UserStorage.getUserInfo(client.id);
+
+            if(id) {
+                if(id === client.id && psword === client.psword) {
+                    return { success: true };
+                }
+                return  { success: false, msg: "비밀번호가 틀렸습니다." }
             }
-            return  { success: false, msg: "비밀번호가 틀렸습니다." }
-        }
+            return { success: false, msg: "존재하지 않는 아이디입니다." }
 
-        return { success: false, msg: "존재하지 않는 아이디입니다." }
+        } catch (err) {
+            return { success: false, msg : err };
+        }
     }
 
     async register() {
