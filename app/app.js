@@ -19,12 +19,15 @@
 const express = require('express');
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
-dotenv.config();
+const morgan = require("morgan");
 
 const app = express();
+dotenv.config();
 
 // 라우팅
 const home = require("./src/routes/home")
+const accessLogStream = require("./src/config/log");
+
 
 // 앱 세팅
 app.set("views", "./src/views");
@@ -32,6 +35,13 @@ app.set("view engine", "ejs");
 
 app.use(express.static(`${__dirname}/src/public`)); // ${__dirname} : 현재 app.js 파일이 있는 위치 반환
 app.use(bodyParser.json());
+
+// app.use(morgan(":method :url :status :res[content-length] - :response-time ms"));
+// app.use(morgan("combined"));
+// app.use(morgan("tiny"));
+app.use(morgan("dev"));
+app.use(morgan("common", { stream:  accessLogStream }));
+
 // URL 을 통해 전달되는 데이터에 한글, 공백 등과 같으 문자가 포함될 경우 제대로 인식되지 않는 문제 해결
 app.use(bodyParser.urlencoded({extended:true}));
 
